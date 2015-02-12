@@ -12,3 +12,4 @@ void SS_CORE_API ss_macro_eval(const char* name);
 size_t SS_CORE_API ss_macro_get_length(const char* name);
 int SS_CORE_API ss_macro_get_content(const char* name, char* buf, size_t sz);
 
+int SS_CORE_API ss_macro_get_integer(const char* name);
