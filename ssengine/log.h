@@ -8,6 +8,9 @@
 #   define _SS_LOG_FORMAT_ARGUMENT_
 #endif
 
+#if defined(__cplusplus)
+extern "C"{
+#endif
 
 #define SS_LL_TRACE		(0)
 #define SS_LL_INFO		(1)
@@ -15,18 +18,18 @@
 #define SS_LL_ERROR		(3)
 #define SS_LL_FATAL		(4)
 
-SS_CORE_API void ss_log(int level, _SS_LOG_FORMAT_ARGUMENT_ const char* format, ...);
-SS_CORE_API void ss_wlog(int level, _SS_LOG_FORMAT_ARGUMENT_ const wchar_t* format, ...);
+	SS_CORE_API void ss_log(int level, _SS_LOG_FORMAT_ARGUMENT_ const char* format, ...);
+	SS_CORE_API void ss_wlog(int level, _SS_LOG_FORMAT_ARGUMENT_ const wchar_t* format, ...);
 
-typedef struct ss_logger
-{
-	void* userdata;
-	void(*log)(int level, const char* msg, size_t sz, void* userdata);
-	void(*wlog)(int level, const wchar_t* msg, size_t sz, void* userdata);
-} ss_logger;
+	typedef struct ss_logger
+	{
+		void* userdata;
+		void(*log)(int level, const char* msg, size_t sz, void* userdata);
+		void(*wlog)(int level, const wchar_t* msg, size_t sz, void* userdata);
+	} ss_logger;
 
-void SS_CORE_API ss_add_logger(ss_logger* logger);
-void SS_CORE_API ss_remove_logger(ss_logger* logger);
+	void SS_CORE_API ss_add_logger(ss_logger* logger);
+	void SS_CORE_API ss_remove_logger(ss_logger* logger);
 
 #define SS_LOG ss_log
 #define SS_WLOG ss_wlog
@@ -63,3 +66,7 @@ void SS_CORE_API ss_remove_logger(ss_logger* logger);
 #define SS_WDEBUGE(fmt, ...) SS_WDEBUG(SS_LL_ERROR, fmt, __VA_ARGS__)
 #define SS_WDEBUGF(fmt, ...) SS_WDEBUG(SS_LL_FATAL, fmt, __VA_ARGS__)
 
+
+#if defined(__cplusplus)
+}
+#endif
