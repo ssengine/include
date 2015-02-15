@@ -5,4 +5,4 @@
 #define CAT_II(x, y) CAT_III(x##y)
 #define CAT_III(v) v
 
-#define SS_CONCAT CAT
+#define SS_CAT CAT

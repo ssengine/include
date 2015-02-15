@@ -4,12 +4,13 @@ INCLUDE_DIRECTORIES($ENV{SS_INCLUDE_PATH})
 
 SET(LOCAL_SOURCES_FILES
 	ssengine/ssengine.h
-	ssengine/ssengine.hpp
 	ssengine/log.h
-	ssengine/log.hpp
+	ssengine/uri.h
+
+	ssengine/pp/cat.h
 
 	ssengine/render/device.h
-	ssengine/render/device.hpp)
+	)
 
 ADD_LIBRARY(SSInclude
 	STATIC
