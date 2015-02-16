@@ -59,6 +59,10 @@ SS_CORE_API void ss_run_script_from_macro(const char* name, int nargs = 0, int n
 SS_CORE_API void ss_run_script_from_macro(const char* name, int nargs, int nrets);
 #endif
 
+SS_CORE_API int luaL_loaduri(lua_State* L, const char* uri);
+
+SS_CORE_API int luaL_loadurix(lua_State* L, const char* uri, const char* mode);
+
 // Invoke a function. 
 // If any error occurred, post error msg to log and returns nothing.
 SS_CORE_API void ss_safe_call(lua_State* L, int nargs, int nrets);
