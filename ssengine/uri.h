@@ -3,10 +3,32 @@
 #include <ssengine/ssengine.h>
 
 #ifdef __cplusplus
-#include <UriParser.hpp>
-typedef network::uri ss_uri;
+#include <string>
+
+struct ss_uri{
+	std::string schema;
+	std::string user;
+	std::string password;
+	std::string host;
+	std::string path;
+	std::string search;
+	std::string tag;
+	int			port;
+
+	SS_CORE_API static ss_uri parse(const std::string& uri);
+	SS_CORE_API static ss_uri from_file(const char* path);
+
+	//methods 
+	ss_uri join(const char* uri){
+		return join(ss_uri::parse(uri));
+	}
+	SS_CORE_API ss_uri join(const ss_uri& other);
+	SS_CORE_API ss_uri normalize();
+	SS_CORE_API ss_uri base_dir();
+};
+
 #else
-typedef struct uri ss_uri;
+typedef struct ss_uri ss_uri;
 #endif
 
 #ifdef __cplusplus
