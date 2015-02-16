@@ -15,16 +15,33 @@ struct ss_uri{
 	std::string tag;
 	int			port;
 
+	SS_CORE_API std::string str() const;
+
 	SS_CORE_API static ss_uri parse(const std::string& uri);
 	SS_CORE_API static ss_uri from_file(const char* path);
 
 	//methods 
-	ss_uri join(const char* uri){
+	ss_uri join(const char* uri) const{
 		return join(ss_uri::parse(uri));
 	}
-	SS_CORE_API ss_uri join(const ss_uri& other);
-	SS_CORE_API ss_uri normalize();
-	SS_CORE_API ss_uri base_dir();
+	SS_CORE_API ss_uri join(const ss_uri& other) const;
+	SS_CORE_API void normalize();
+	SS_CORE_API ss_uri base_dir() const;
+
+	SS_CORE_API bool is_local() const;
+
+	// queries
+	SS_CORE_API bool exists() const;
+	SS_CORE_API bool is_file() const;
+	SS_CORE_API bool is_directory() const;
+	SS_CORE_API struct input_stream*  open_for_read() const;
+
+	//TODO: remove dir
+
+	// operates
+	SS_CORE_API bool mkdir() const;
+	SS_CORE_API struct output_stream*  open_for_write() const;
+	SS_CORE_API struct output_stream*  open_for_append() const;
 };
 
 #else
@@ -48,9 +65,31 @@ struct input_stream : basic_stream {
 struct output_stream : basic_stream {
 	virtual size_t write(const void* buf, size_t size) = 0;
 };
+
+typedef struct ss_uri_schema_handler
+{
+	// properties
+	virtual bool is_local() = 0;
+
+	// queries
+	virtual bool exists(const ss_uri& uri) = 0;
+	virtual bool is_file(const ss_uri& uri) = 0;
+	virtual bool is_directory(const ss_uri& uri) = 0;
+	virtual struct input_stream*  open_for_read(const ss_uri& uri) = 0;
+
+	//TODO: remove dir
+
+	// operates
+	virtual bool mkdir(const ss_uri& uri) = 0;
+	virtual struct output_stream*  open_for_write(const ss_uri& uri) = 0;
+	virtual struct output_stream*  open_for_append(const ss_uri& uri) = 0;
+} ss_uri_schema_handler;
+
 #else
 struct input_stream;
 struct output_stream;
+
+typedef struct ss_uri_schema_handler ss_uri_schema_handler;
 #endif
 
 #ifdef __cplusplus
@@ -59,26 +98,9 @@ extern "C"{
 
 #include <stdbool.h>
 
-typedef struct ss_uri_schema_handler
-{
-	// properties
-	bool (*is_local)();
+SS_CORE_API void ss_uri_add_schema(const char* schema, ss_uri_schema_handler* handler);
 
-	// queries
-	bool(*exists)(const ss_uri& uri);
-	bool(*is_file)(const ss_uri& uri);
-	bool(*is_directory)(const ss_uri& uri);
-	struct input_stream* (*open_for_read)(const ss_uri& uri);
-
-	//TODO: remove dir
-
-	// operates
-	bool(*mkdir)(const ss_uri& uri);
-	struct output_stream* (*open_for_write)(const ss_uri& uri);
-	struct output_stream* (*open_for_append)(const ss_uri& uri);
-} ss_uri_schema_handler;
-
-SS_CORE_API void ss_uri_add_schema(const char* schema, ss_uri_schema_handler handler);
+SS_CORE_API void ss_uri_add_schema_alias(const char* schema, const ss_uri& alias, bool readOnly = false);
 
 SS_CORE_API void ss_uri_init_schemas();
 
