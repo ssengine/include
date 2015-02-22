@@ -26,10 +26,16 @@ enum ss_clear_flags{
 	SS_CF_STENCIL	= 0x4
 };
 
+struct ss_buffer{
+	virtual ~ss_buffer();
+};
+
 struct ss_render_device
 {
 	//TODO: CheckFeatureSupport
 	//TODO: CheckFormatSupport
+
+	virtual ~ss_render_device(){}
 	
 	virtual void clear_color(const ss_color& color) = 0;
 
@@ -41,7 +47,10 @@ struct ss_render_device
 	virtual void clear(int flags = SS_CF_COLOR) = 0;
 	virtual void present() = 0;
 
-	virtual void destroy() = 0;
+	void destroy(){delete this};
+
+	virtual void draw(int count, int from) = 0;
+	virtual void draw_index(int count, int from, int base) = 0;
 };
 
 typedef ss_render_device* (*ss_device_factory_type)(ss_device_type dt, uintptr_t hwnd);
