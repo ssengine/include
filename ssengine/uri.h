@@ -68,6 +68,8 @@ struct output_stream : basic_stream {
 
 typedef struct ss_uri_schema_handler
 {
+	virtual ~ss_uri_schema_handler(){}
+
 	// properties
 	virtual bool is_local() = 0;
 
