@@ -1,5 +1,6 @@
 #pragma once
-
+#define _CRTDBG_MAP_ALLOC
+#include <crtdbg.h>
 
 #if defined(WIN32)
 	#if defined(BUILDING_SS_CORE)
@@ -9,6 +10,12 @@
 	#endif
 #else
 	#define SS_CORE_API
+#endif
+
+#if defined(WIN32)
+	#define SS_EXPORT __declspec(dllexport)
+#else
+	#define SS_EXPORT 
 #endif
 
 #include <wchar.h>
