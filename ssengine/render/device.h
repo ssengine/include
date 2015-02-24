@@ -36,8 +36,8 @@ enum ss_primitive_type{
 };
 
 enum ss_render_format{
-	SS_VBF_NULL			= 0x0,
-	SS_VBF_FLOAT32_RGBA	= 0x1,
+	SS_FORMAT_NULL			= 0x0,
+	SS_FORMAT_FLOAT32_RGBA	= 0x1,
 };
 
 inline size_t ss_render_format_sizeof(ss_render_format type){
@@ -71,7 +71,7 @@ struct ss_vertex_buffer_managed : ss_vertex_buffer{
 enum ss_render_input_usage_type{
 	SS_USAGE_NONE		= 0,
 	SS_USAGE_POSITION	= 1,
-	SS_USAGE_COLOR		= 2,
+	SS_USAGE_DIFFUSE	= 2,
 	SS_USAGE_TEXCOORD	= 3,
 	SS_USAGE_NORMAL		= 4
 };
@@ -132,6 +132,19 @@ enum ss_predefined_technique_type{
 	SS_PDT_GREY					= 3
 };
 
+struct ss_constant_buffer{
+	virtual ~ss_constant_buffer() = 0{}
+};
+
+struct ss_constant_buffer_memory : ss_constant_buffer{
+	virtual void* lock() = 0;
+	virtual void unlock() = 0;
+};
+
+struct ss_texture{
+	virtual ~ss_texture();
+};
+
 struct ss_render_device
 {
 	//TODO: CheckFeatureSupport
@@ -175,8 +188,23 @@ struct ss_render_device
 		) = 0;
 
 	virtual void unset_vertex_buffer(
-		size_t start,
-		size_t num
+			size_t start,
+			size_t num
+		) = 0;
+
+	virtual ss_constant_buffer_memory* create_memory_constant_buffer(
+			ss_render_format type,
+			size_t count
+		) = 0;
+
+	virtual void set_ps_constant_buffer(
+			size_t start,
+			size_t num,
+			ss_constant_buffer* const * buffer
+		) = 0;
+	virtual void unset_ps_constant_buffer(
+			size_t start,
+			size_t num
 		) = 0;
 };
 
