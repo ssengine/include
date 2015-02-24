@@ -53,20 +53,20 @@ inline size_t ss_render_format_sizeof(ss_render_format type){
 	return 0;
 }
 
-struct ss_vertex_buffer{
-	virtual ~ss_vertex_buffer() = 0{}
+struct ss_buffer{
+	virtual ~ss_buffer() = 0{}
 };
 
-struct ss_vertex_buffer_memory : ss_vertex_buffer{
+struct ss_buffer_memory : ss_buffer{
 	virtual void* lock() = 0;
 	virtual void unlock() = 0;
 };
 
-struct ss_vertex_buffer_static : ss_vertex_buffer{
+struct ss_vertex_buffer_static : ss_buffer{
 
 };
 
-struct ss_vertex_buffer_managed : ss_vertex_buffer{
+struct ss_vertex_buffer_managed : ss_buffer{
 
 };
 
@@ -134,15 +134,6 @@ enum ss_predefined_technique_type{
 	SS_PDT_GREY					= 3
 };
 
-struct ss_constant_buffer{
-	virtual ~ss_constant_buffer() = 0{}
-};
-
-struct ss_constant_buffer_memory : ss_constant_buffer{
-	virtual void* lock() = 0;
-	virtual void unlock() = 0;
-};
-
 struct ss_texture{
 	virtual ~ss_texture() = 0 {};
 };
@@ -176,7 +167,7 @@ struct ss_render_device
 	virtual void draw(int count, int from) = 0;
 	virtual void draw_index(int count, int from, int base) = 0;
 
-	virtual ss_vertex_buffer_memory* create_memory_vertex_bufer(
+	virtual ss_buffer_memory* create_memory_buffer(
 		size_t bytes) = 0;
 
 	virtual ss_render_technique* get_predefined_technique(ss_predefined_technique_type type) = 0;
@@ -186,7 +177,7 @@ struct ss_render_device
 	virtual void set_vertex_buffer(
 			size_t start,
 			size_t num,
-			ss_vertex_buffer* const * buffer,
+			ss_buffer* const * buffer,
 			const unsigned int* strides,
 			const unsigned int* offset
 		) = 0;
@@ -196,15 +187,10 @@ struct ss_render_device
 			size_t num
 		) = 0;
 
-	virtual ss_constant_buffer_memory* create_memory_constant_buffer(
-			ss_render_format type,
-			size_t count
-		) = 0;
-
 	virtual void set_ps_constant_buffer(
 			size_t start,
 			size_t num,
-			ss_constant_buffer* const * buffers
+			ss_buffer* const * buffers
 		) = 0;
 	virtual void unset_ps_constant_buffer(
 			size_t start,
