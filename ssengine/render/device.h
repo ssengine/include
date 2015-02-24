@@ -38,11 +38,13 @@ enum ss_primitive_type{
 enum ss_render_format{
 	SS_FORMAT_NULL			= 0x0,
 	SS_FORMAT_FLOAT32_RGBA	= 0x1,
+	SS_FORMAT_BYTE_RGBA		= 0x2,
+	SS_FORMAT_FLOAT32_RG	= 0x3,
 };
 
 inline size_t ss_render_format_sizeof(ss_render_format type){
 	static size_t sizes[] = {
-		0, 16
+		0, 16, 4, 8
 	};
 	int iType = (int)type;
 	if (iType >= 0 && iType <= 2){
@@ -142,7 +144,10 @@ struct ss_constant_buffer_memory : ss_constant_buffer{
 };
 
 struct ss_texture{
-	virtual ~ss_texture();
+	virtual ~ss_texture() = 0 {};
+};
+
+struct ss_texture2d : ss_texture{
 };
 
 struct ss_render_device
@@ -172,8 +177,7 @@ struct ss_render_device
 	virtual void draw_index(int count, int from, int base) = 0;
 
 	virtual ss_vertex_buffer_memory* create_memory_vertex_bufer(
-		ss_render_format type,
-		size_t count) = 0;
+		size_t bytes) = 0;
 
 	virtual ss_render_technique* get_predefined_technique(ss_predefined_technique_type type) = 0;
 
@@ -200,11 +204,27 @@ struct ss_render_device
 	virtual void set_ps_constant_buffer(
 			size_t start,
 			size_t num,
-			ss_constant_buffer* const * buffer
+			ss_constant_buffer* const * buffers
 		) = 0;
 	virtual void unset_ps_constant_buffer(
 			size_t start,
 			size_t num
+		) = 0;
+
+	virtual ss_texture2d* create_texture2d(
+			size_t width, size_t height, 
+			ss_render_format format, 
+			const void* data) = 0;
+
+	virtual void set_ps_texture2d_resource(
+			size_t start,
+			size_t num,
+			ss_texture2d* const * textures
+		) = 0;
+
+	virtual void unset_ps_texture2d_resource(
+		size_t start,
+		size_t num
 		) = 0;
 };
 
