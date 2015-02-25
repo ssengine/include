@@ -6,10 +6,13 @@ SET(LOCAL_SOURCES_FILES
 	ssengine/ssengine.h
 	ssengine/log.h
 	ssengine/uri.h
+	ssengine/core.h
 
 	ssengine/pp/cat.h
 
+
 	ssengine/render/device.h
+	ssengine/render/types.h
 	)
 
 ADD_LIBRARY(SSInclude
