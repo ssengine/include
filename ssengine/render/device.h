@@ -1,5 +1,7 @@
 #pragma once
 
+#include <ssengine/ssengine.h>
+
 struct ss_color{
 	float r, g, b, a;
 };
@@ -215,3 +217,4 @@ struct ss_render_device
 };
 
 typedef ss_render_device* (*ss_device_factory_type)(ss_device_type dt, uintptr_t hwnd);
+

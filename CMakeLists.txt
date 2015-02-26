@@ -13,6 +13,7 @@ SET(LOCAL_SOURCES_FILES
 
 	ssengine/render/device.h
 	ssengine/render/types.h
+	ssengine/render/drawbatch.h
 	)
 
 ADD_LIBRARY(SSInclude
