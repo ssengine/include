@@ -36,13 +36,15 @@ enum ss_primitive_type{
 };
 
 enum ss_render_format{
-	SS_VBF_NULL			= 0x0,
-	SS_VBF_FLOAT32_RGBA	= 0x1,
+	SS_FORMAT_NULL			= 0x0,
+	SS_FORMAT_FLOAT32_RGBA	= 0x1,
+	SS_FORMAT_BYTE_RGBA		= 0x2,
+	SS_FORMAT_FLOAT32_RG	= 0x3,
 };
 
 inline size_t ss_render_format_sizeof(ss_render_format type){
 	static size_t sizes[] = {
-		0, 16
+		0, 16, 4, 8
 	};
 	int iType = (int)type;
 	if (iType >= 0 && iType <= 2){
@@ -51,27 +53,27 @@ inline size_t ss_render_format_sizeof(ss_render_format type){
 	return 0;
 }
 
-struct ss_vertex_buffer{
-	virtual ~ss_vertex_buffer() = 0{}
+struct ss_buffer{
+	virtual ~ss_buffer() = 0{}
 };
 
-struct ss_vertex_buffer_memory : ss_vertex_buffer{
+struct ss_buffer_memory : ss_buffer{
 	virtual void* lock() = 0;
 	virtual void unlock() = 0;
 };
 
-struct ss_vertex_buffer_static : ss_vertex_buffer{
+struct ss_vertex_buffer_static : ss_buffer{
 
 };
 
-struct ss_vertex_buffer_managed : ss_vertex_buffer{
+struct ss_vertex_buffer_managed : ss_buffer{
 
 };
 
 enum ss_render_input_usage_type{
 	SS_USAGE_NONE		= 0,
 	SS_USAGE_POSITION	= 1,
-	SS_USAGE_COLOR		= 2,
+	SS_USAGE_DIFFUSE	= 2,
 	SS_USAGE_TEXCOORD	= 3,
 	SS_USAGE_NORMAL		= 4
 };
@@ -132,6 +134,13 @@ enum ss_predefined_technique_type{
 	SS_PDT_GREY					= 3
 };
 
+struct ss_texture{
+	virtual ~ss_texture() = 0 {};
+};
+
+struct ss_texture2d : ss_texture{
+};
+
 struct ss_render_device
 {
 	//TODO: CheckFeatureSupport
@@ -158,9 +167,8 @@ struct ss_render_device
 	virtual void draw(int count, int from) = 0;
 	virtual void draw_index(int count, int from, int base) = 0;
 
-	virtual ss_vertex_buffer_memory* create_memory_vertex_bufer(
-		ss_render_format type,
-		size_t count) = 0;
+	virtual ss_buffer_memory* create_memory_buffer(
+		size_t bytes) = 0;
 
 	virtual ss_render_technique* get_predefined_technique(ss_predefined_technique_type type) = 0;
 
@@ -169,12 +177,38 @@ struct ss_render_device
 	virtual void set_vertex_buffer(
 			size_t start,
 			size_t num,
-			ss_vertex_buffer* const * buffer,
+			ss_buffer* const * buffer,
 			const unsigned int* strides,
 			const unsigned int* offset
 		) = 0;
 
 	virtual void unset_vertex_buffer(
+			size_t start,
+			size_t num
+		) = 0;
+
+	virtual void set_ps_constant_buffer(
+			size_t start,
+			size_t num,
+			ss_buffer* const * buffers
+		) = 0;
+	virtual void unset_ps_constant_buffer(
+			size_t start,
+			size_t num
+		) = 0;
+
+	virtual ss_texture2d* create_texture2d(
+			size_t width, size_t height, 
+			ss_render_format format, 
+			const void* data) = 0;
+
+	virtual void set_ps_texture2d_resource(
+			size_t start,
+			size_t num,
+			ss_texture2d* const * textures
+		) = 0;
+
+	virtual void unset_ps_texture2d_resource(
 		size_t start,
 		size_t num
 		) = 0;

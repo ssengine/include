@@ -1,11 +1,14 @@
 #pragma once
 
 #include <ssengine/ssengine.h>
+#include <ssengine/core.h>
 
 #ifdef __cplusplus
 #include <string>
 
 struct ss_uri{
+	ss_core_context* C;
+
 	std::string schema;
 	std::string user;
 	std::string password;
@@ -15,14 +18,16 @@ struct ss_uri{
 	std::string tag;
 	int			port;
 
+	ss_uri(ss_core_context* _C) :C(_C){}
+
 	SS_CORE_API std::string str() const;
 
-	SS_CORE_API static ss_uri parse(const std::string& uri);
-	SS_CORE_API static ss_uri from_file(const char* path);
+	SS_CORE_API static ss_uri parse(ss_core_context* C, const std::string& uri);
+	SS_CORE_API static ss_uri from_file(ss_core_context* C, const char* path);
 
 	//methods 
 	ss_uri join(const char* uri) const{
-		return join(ss_uri::parse(uri));
+		return join(ss_uri::parse(C, uri));
 	}
 	SS_CORE_API ss_uri join(const ss_uri& other) const;
 	SS_CORE_API void normalize();
@@ -100,22 +105,20 @@ extern "C"{
 
 #include <stdbool.h>
 
-SS_CORE_API void ss_uri_add_schema(const char* schema, ss_uri_schema_handler* handler);
+SS_CORE_API void ss_uri_add_schema(ss_core_context* C, const char* schema, ss_uri_schema_handler* handler);
 
-SS_CORE_API void ss_uri_add_schema_alias(const char* schema, const ss_uri& alias, bool readOnly = false);
-
-SS_CORE_API void ss_uri_init_schemas();
+SS_CORE_API void ss_uri_add_schema_alias(ss_core_context* C, const char* schema, const ss_uri& alias, bool readOnly = false);
 
 //TODO: provide C++ interface for theses:
 
-SS_CORE_API bool ss_uri_exists(const char* uri);
-SS_CORE_API bool ss_uri_is_file(const char* uri);
-SS_CORE_API bool ss_uri_is_directory(const char* uri);
-SS_CORE_API bool ss_uri_mkdir(const char* uri);
+SS_CORE_API bool ss_uri_exists(ss_core_context* C, const char* uri);
+SS_CORE_API bool ss_uri_is_file(ss_core_context* C, const char* uri);
+SS_CORE_API bool ss_uri_is_directory(ss_core_context* C, const char* uri);
+SS_CORE_API bool ss_uri_mkdir(ss_core_context* C, const char* uri);
 
-SS_CORE_API input_stream* ss_uri_open_for_read(const char* uri);
-SS_CORE_API output_stream* ss_uri_open_for_write(const char* uri);
-SS_CORE_API output_stream* ss_uri_open_for_append(const char* uri);
+SS_CORE_API input_stream* ss_uri_open_for_read(ss_core_context* C, const char* uri);
+SS_CORE_API output_stream* ss_uri_open_for_write(ss_core_context* C, const char* uri);
+SS_CORE_API output_stream* ss_uri_open_for_append(ss_core_context* C, const char* uri);
 
 
 #ifdef __cplusplus
