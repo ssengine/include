@@ -1,5 +1,7 @@
 #pragma once
 
+#include <ssengine/ssengine.h>
+
 struct ss_color{
 	float r, g, b, a;
 };
@@ -27,12 +29,12 @@ enum ss_clear_flags{
 };
 
 enum ss_primitive_type{
-	SS_MT_NULL			= 0x0,
-	SS_MT_POINTLIST		= 0x1,
-	SS_MT_LINELIST		= 0x2,
-	SS_MT_LINESTRIP		= 0x3,
-	SS_MT_TRIANGLELIST	= 0x4,
-	SS_MT_TRIANGLESTRIP	= 0x5,
+	SS_PT_NULL			= 0x0,
+	SS_PT_POINTLIST		= 0x1,
+	SS_PT_LINELIST		= 0x2,
+	SS_PT_LINESTRIP		= 0x3,
+	SS_PT_TRIANGLELIST	= 0x4,
+	SS_PT_TRIANGLESTRIP	= 0x5,
 };
 
 enum ss_render_format{
@@ -60,13 +62,14 @@ struct ss_buffer{
 struct ss_buffer_memory : ss_buffer{
 	virtual void* lock() = 0;
 	virtual void unlock() = 0;
+	virtual void copy(size_t ofs, void* src, size_t sz) = 0;
 };
 
-struct ss_vertex_buffer_static : ss_buffer{
+struct ss_buffer_static : ss_buffer{
 
 };
 
-struct ss_vertex_buffer_managed : ss_buffer{
+struct ss_buffer_managed : ss_buffer{
 
 };
 
@@ -215,3 +218,4 @@ struct ss_render_device
 };
 
 typedef ss_render_device* (*ss_device_factory_type)(ss_device_type dt, uintptr_t hwnd);
+

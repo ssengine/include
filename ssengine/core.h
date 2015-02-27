@@ -8,13 +8,24 @@ typedef struct ss_core_context ss_core_context;
 extern "C" {
 #endif
 
+#include <stdbool.h>
+
 SS_CORE_API ss_core_context* ss_create_context();
 
 SS_CORE_API void ss_destroy_context(ss_core_context* C);
 
+// render device
 
-//TODO: move to another place.
-#include <lua.h>
+typedef struct ss_render_device ss_render_device;
+
+SS_CORE_API ss_render_device*  ss_get_render_device(ss_core_context* C);
+
+SS_CORE_API void ss_set_render_device(ss_core_context* C, ss_render_device* device);
+
+// script context
+
+typedef struct lua_State lua_State;
+typedef int(*lua_CFunction) (lua_State *L);
 
 SS_CORE_API lua_State* ss_get_script_context(ss_core_context* C);
 
@@ -34,7 +45,7 @@ SS_CORE_API int luaL_loadurix(lua_State* L, const char* uri, const char* mode);
 
 // Invoke a function. 
 // If any error occurred, post error msg to log and returns nothing.
-SS_CORE_API void ss_safe_call(lua_State* L, int nargs, int nrets);
+SS_CORE_API void ss_lua_safe_call(lua_State* L, int nargs, int nrets);
 
 #ifdef __cplusplus
 }
