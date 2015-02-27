@@ -6,19 +6,19 @@ struct ss_color{
 	float r, g, b, a;
 };
 
-enum ss_device_type{
-	SS_DT_ANY		= 0xffffffff,
+enum ss_render_device_type{
+	SS_RDT_ANY		= 0xffffffff,
 
-	SS_DT_NULL		= 0x0,
-	SS_DT_SOFTWARE  = 0x1,
+	SS_RDT_NULL		= 0x0,
+	SS_RDT_SOFTWARE  = 0x1,
 
-	SS_DT_OPENGL = 0x10,
-	SS_DT_OPENGLES = 0x11,
+	SS_RDT_OPENGL = 0x10,
+	SS_RDT_OPENGLES = 0x11,
 
-	SS_DT_DIRECTX9 = 0x20,
-	SS_DT_DIRECTX10 = 0x21,
-	SS_DT_DIRECTX11 = 0x22,
-	SS_DT_DIRECTX12 = 0x23
+	SS_RDT_DIRECTX9 = 0x20,
+	SS_RDT_DIRECTX10 = 0x21,
+	SS_RDT_DIRECTX11 = 0x22,
+	SS_RDT_DIRECTX12 = 0x23
 };
 
 enum ss_clear_flags{
@@ -217,5 +217,5 @@ struct ss_render_device
 		) = 0;
 };
 
-typedef ss_render_device* (*ss_device_factory_type)(ss_device_type dt, uintptr_t hwnd);
+typedef ss_render_device* (*ss_render_device_factory_type)(ss_render_device_type dt, uintptr_t hwnd);
 
