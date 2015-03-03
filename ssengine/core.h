@@ -39,6 +39,8 @@ SS_CORE_API void ss_run_script_from_macro(ss_core_context* C, const char* name, 
 SS_CORE_API void ss_run_script_from_macro(ss_core_context* C, const char* name, int nargs, int nrets);
 #endif
 
+SS_CORE_API void ss_cache_script_from_macro(lua_State* L, const char* name, void* tagPointer);
+
 SS_CORE_API int luaL_loaduri(lua_State* L, const char* uri);
 
 SS_CORE_API int luaL_loadurix(lua_State* L, const char* uri, const char* mode);
