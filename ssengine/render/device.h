@@ -41,7 +41,8 @@ enum ss_render_format{
 	SS_FORMAT_NULL			= 0x0,
 	SS_FORMAT_FLOAT32_RGBA	= 0x1,
 	SS_FORMAT_BYTE_RGBA		= 0x2,
-	SS_FORMAT_FLOAT32_RG	= 0x3,
+	SS_FORMAT_FLOAT32_RG    = 0x3,
+	SS_FORMAT_BYTE_BGRA     = 0x4,
 };
 
 inline size_t ss_render_format_sizeof(ss_render_format type){
