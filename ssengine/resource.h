@@ -86,6 +86,10 @@ struct ss_resource_reference
 		return ptr;
 	}
 
+	void set(res_type *_ptr) {
+		ptr = _ptr;
+	}
+
 	static this_type* wrap(ss_resource_ref* ref){
 		return reinterpret_cast<this_type*>(ref);
 	}
