@@ -93,6 +93,14 @@ struct ss_resource_reference
 	static const this_type* wrap(const ss_resource_ref* ref){
 		return reinterpret_cast<const this_type*>(ref);
 	}
+
+    ss_resource_ref* unwrap(){
+        return reinterpret_cast<ss_resource_ref*>(this);
+    }
+
+    const ss_resource_ref* unwrap() const{
+        return reinterpret_cast<const ss_resource_ref*>(this);
+    }
 private:
 	res_type*						ptr;
 };

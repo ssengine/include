@@ -50,7 +50,7 @@ inline size_t ss_render_format_sizeof(ss_render_format type){
 		0, 16, 4, 8, 4
 	};
 	int iType = (int)type;
-	if (iType >= 0 && iType <= 2){
+	if (iType >= 0 && iType <= 4){
 		return sizes[iType];
 	}
 	return 0;
