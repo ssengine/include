@@ -101,6 +101,8 @@ struct ss_resource_reference
     const ss_resource_ref* unwrap() const{
         return reinterpret_cast<const ss_resource_ref*>(this);
     }
+
+    static this_type* get(ss_core_context* C, const char* uri);
 private:
 	res_type*						ptr;
 };
