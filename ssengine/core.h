@@ -49,6 +49,17 @@ SS_CORE_API int luaL_loadurix(lua_State* L, const char* uri, const char* mode);
 // If any error occurred, post error msg to log and returns nothing.
 SS_CORE_API void ss_lua_safe_call(lua_State* L, int nargs, int nrets);
 
+SS_CORE_API void ss_lua_push_resource_ref(lua_State* L, struct ss_resource_ref* res);
+
+#ifdef __cplusplus
+#include <lauxlib.h>
+inline struct ss_resource_ref*& ss_lua_check_resource_ref(lua_State* L, int pos){
+    return *reinterpret_cast<struct ss_resource_ref**>(luaL_checkudata(L, pos, "Resource"));
+}
+#else
+#define ss_lua_check_resource_ref(L, pos) *((struct ss_resource_ref**)luaL_checkudata(L, pos, "Resource"))
+#endif
+
 #ifdef __cplusplus
 }
 #endif
