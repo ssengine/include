@@ -56,10 +56,24 @@ SS_CORE_API void ss_lua_push_resource_ref(lua_State* L, struct ss_resource_ref* 
 inline struct ss_resource_ref*& ss_lua_check_resource_ref(lua_State* L, int pos){
     return *reinterpret_cast<struct ss_resource_ref**>(luaL_checkudata(L, pos, "Resource"));
 }
+
 #else
 #define ss_lua_check_resource_ref(L, pos) *((struct ss_resource_ref**)luaL_checkudata(L, pos, "Resource"))
 #endif
 
 #ifdef __cplusplus
+}
+
+template <typename res_type>
+struct ss_resource_reference;
+
+template <typename T>
+inline ss_resource_reference<T>*& ss_lua_check_resource_reference(lua_State* L, int pos){
+    ss_resource_reference<T>*& ret = *reinterpret_cast<struct ss_resource_reference<T>**>(luaL_checkudata(L, pos, "Resource"));
+    if (ret->prototype->typetag != ss_resource_reference<T>::typetag()){
+        //TODO: display error message with actual resource type.
+        luaL_typerror(L, pos, "Resource");
+    }
+    return ret;
 }
 #endif

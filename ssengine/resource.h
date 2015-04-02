@@ -82,6 +82,7 @@ struct ss_resource_reference
 	struct ss_resource_prototype* const	prototype;
 	const int							device_type;
 
+    static const ss_resource_type* typetag();
 	res_type* get(){
 		return ptr;
 	}
