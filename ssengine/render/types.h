@@ -94,9 +94,9 @@ namespace ss{
 
 		matrix& operator = (const matrix& other);
 
-		float2 transpose(const float2& vec);
-		float3 transpose(const float3& vec);
-		float4 transpose(const float4& vec);
+		float2 transpose(const float2& vec) const;
+		float3 transpose(const float3& vec) const;
+		float4 transpose(const float4& vec) const;
 
 		void push_translate(float dx, float dy);
 		void push_translate(float dx, float dy, float dz);
@@ -104,13 +104,16 @@ namespace ss{
 		void push_scale(float sx, float sy);
 		void push_scale(float sx, float sy, float sz);
 
-		void push_rotate2d(float sin, float cos);
+		void push_rotate2d(float cos, float sin);
 		void push_rotate2d(float angel);
 
 		static matrix ortho2d(float width, float height);
 	};
 
 	struct matrix_stack{
+        matrix_stack(){
+            stack.push(matrix::identity);
+        }
 		// Copy and push the top of stack
 		void push(){
 			stack.push(matrix(stack.top()));
@@ -139,6 +142,10 @@ namespace ss{
 		std::stack<matrix>   stack;
 	};
 }
+typedef ss::matrix ss_matrix;
+typedef ss::matrix_stack ss_matrix_stack;
 
 #else	//__cplusplus
+typedef struct ss_matrix ss_matrix;
+typedef struct ss_matrix_stack ss_matrix_stack;
 #endif  //__cplusplus
