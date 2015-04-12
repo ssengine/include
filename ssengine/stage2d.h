@@ -50,6 +50,7 @@ struct ss_node2d
 
     void calc();
     const transform& get_transform(){
+        calc();
         return transform;
     }
 
