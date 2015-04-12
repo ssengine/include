@@ -8,6 +8,7 @@ SET(LOCAL_SOURCES_FILES
 	ssengine/uri.h
 	ssengine/core.h
 	ssengine/resource.h
+	ssengine/stage2d.h
 
 	ssengine/pp/cat.h
 
