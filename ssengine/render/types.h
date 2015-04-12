@@ -107,7 +107,7 @@ namespace ss{
 		void push_rotate2d(float cos, float sin);
 		void push_rotate2d(float angel);
 
-		static matrix ortho2d(float width, float height);
+		static matrix ortho2d(float width, float height, float x=0, float y=0);
 	};
 
 	struct matrix_stack{
