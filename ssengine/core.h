@@ -33,6 +33,11 @@ SS_CORE_API ss_core_context* ss_lua_get_core_context(lua_State* L);
 
 SS_CORE_API void ss_lua_preload_module(lua_State* L, const char* name, lua_CFunction func);
 
+SS_CORE_API void ss_lua_require_module(lua_State *L, const char* name);
+
+typedef void(*ss_main_func_type)(ss_core_context* C);
+SS_CORE_API int ss_load_plugin(ss_core_context* C, const char* name);
+
 #if defined(__cplusplus)
 SS_CORE_API void ss_run_script_from_macro(ss_core_context* C, const char* name, int nargs = 0, int nrets = 0);
 #else
@@ -50,6 +55,9 @@ SS_CORE_API int luaL_loadurix(lua_State* L, const char* uri, const char* mode);
 SS_CORE_API void ss_lua_safe_call(lua_State* L, int nargs, int nrets);
 
 SS_CORE_API void ss_lua_push_resource_ref(lua_State* L, struct ss_resource_ref* res);
+
+typedef struct ss_resource_ref ss_resource_ref;
+typedef ss_resource_ref* (*resource_loader_func)(ss_core_context* C, const char* uri);
 
 #ifdef __cplusplus
 #include <lauxlib.h>

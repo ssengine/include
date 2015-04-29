@@ -59,6 +59,18 @@ namespace ss{
 		}
 	};
 
+    struct int2{
+        union{
+            struct {
+                int x, y;
+            };
+            int data[2];
+        };
+        int2(int _x = 0, int _y = 0)
+            : x(_x), y(_y){
+        }
+    };
+
 	struct color{
 		union {
 			float data[4];

@@ -47,6 +47,11 @@ struct ss_uri{
 	SS_CORE_API bool mkdir() const;
 	SS_CORE_API struct output_stream*  open_for_write() const;
 	SS_CORE_API struct output_stream*  open_for_append() const;
+
+    //TODO: Implement theres:
+    //SS_CORE_API std::string query(const std::string key);
+    //SS_CORE_API std::vector<std::string> query_multi(const std::string key);
+    //SS_CORE_API std::map<std::string, std::vector<std::string> > parse_query(const std::string key);
 };
 
 #else

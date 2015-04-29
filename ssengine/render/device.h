@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ssengine/ssengine.h>
+#include <ssengine/render/types.h>
 
 struct ss_color{
 	float r, g, b, a;
@@ -143,6 +144,9 @@ struct ss_texture{
 };
 
 struct ss_texture2d : ss_texture{
+    virtual ss::int2 get_size() = 0;
+    virtual ss::int2 get_origin_size() = 0;
+    virtual void set_origin_size(ss::int2) = 0;
 };
 
 struct ss_render_device

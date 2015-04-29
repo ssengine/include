@@ -24,7 +24,7 @@ typedef struct ss_resource_ref{
 	void*								ptr;
 } ss_resource_ref;
 
-typedef struct ss_resource_type{}  ss_resource_type;
+typedef struct ss_resource_type{ char _unused; }  ss_resource_type;
 
 typedef struct ss_resource_prototype{
 	const ss_resource_type*const typetag;
@@ -46,8 +46,6 @@ SS_CORE_API void ss_resource_release(ss_core_context* C, ss_resource_ref* ref);
 SS_CORE_API void ss_resource_addref(ss_core_context* C, ss_resource_ref* ref);
 
 SS_CORE_API ss_resource_ref* ss_resource_create(ss_core_context* C, const ss_resource_prototype* prototype, const char* uri, int device_type);
-
-
 
 SS_CORE_API int ss_get_user_device_type(ss_core_context* C, const char* name);
 
@@ -71,6 +69,8 @@ SS_CORE_API bool ss_resource_is_loading(ss_core_context* C, ss_resource_ref* ref
 
 #ifdef __cplusplus
 }
+
+SS_CORE_API const std::string& ss_resource_get_uri(ss_core_context* C, ss_resource_ref* ref);
 
 //TODO: Reimplement me as a smart pointer.
 template <typename res_type>
